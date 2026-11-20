@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shikimori - Profil</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .profile-header-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 16px; display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+    .profile-header-top { display: flex; align-items: center; gap: 12px; }
+    .profile-header-top h2 { display: flex; align-items: center; gap: 8px; }
+    .edit-icon { color: var(--accent); font-size: 16px;}
+    .avatar { width: 56px; height: 56px; border-radius: 50%; background: #d8b4fe; display: flex; justify-content: center; align-items: center; overflow: hidden; border: 2px solid var(--border-color); }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .badges { display: flex; gap: 8px; }
+    .settings-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .settings-icon { width: 40px; height: 40px; background: var(--bg-card-light); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--text-muted); font-size: 20px; }
+    .settings-info h4 { font-size: 14px; margin-bottom: 2px;}
+    .settings-info p { font-size: 12px; color: var(--text-muted); }
+    .upload-btn { width: 100%; padding: 12px; background: transparent; border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-main); font-size: 14px; display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 20px; cursor: pointer; }
+    .avatar-preview { width: 80px; height: 80px; border-radius: 50%; background: #d8b4fe; margin: 0 auto 20px auto; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+    .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .preset-grid { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
+    .preset-grid::-webkit-scrollbar { display: none; }
+    .preset-item { min-width: 70px; height: 90px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; }
+    .preset-item.active { border-color: var(--accent); background: rgba(168, 85, 247, 0.1); }
+    .preset-item img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .preset-item span { font-size: 11px; color: var(--text-muted); }
+    .preset-item.active span { color: var(--accent); }
+    .tag-role { display: inline-block; border: 1px solid var(--text-main); padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 24px; }
+    .text-warning { color: #f59e0b; font-size: 13px; margin-bottom: 12px;}
+    .text-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <button class="icon-btn" onclick="window.location.href='home.html'"><i class='bx bx-chevron-left'></i></button>
+      <div style="text-align: center; flex: 1;">
+        <h1 style="font-size: 16px;">Profil & Keamanan</h1>
+        <p style="font-size: 11px; color: var(--text-muted);">Foto · title · banner · password</p>
+      </div>
+      <button class="icon-btn"><i class='bx bx-menu'></i></button>
+    </header>
+    <div class="profile-header-card">
+      <div class="profile-header-top">
+        <div class="avatar"><img src="https://i.pinimg.com/736x/8a/80/2f/8a802f8b3e04ce32eb62f1cc23272b95.jpg" alt="Profile"></div>
+        <h2>Shikimori <i class='bx bxs-pencil edit-icon'></i></h2>
+      </div>
+      <div class="badges">
+        <span class="badge">FREE</span>
+        <span class="badge"><i class='bx bx-globe'></i> GS - Off</span>
+        <span class="badge"><i class='bx bx-calendar'></i> 17/11/2026</span>
+      </div>
+    </div>
+    <p class="section-title">Settings</p>
+    <div class="settings-card">
+      <div class="settings-icon"><i class='bx bx-cog'></i></div>
+      <div class="settings-info"><h4>Pengaturan Aplikasi</h4><p>Theme Night/Day · mute notifikasi</p></div>
+      <i class='bx bx-chevron-right' style="color: #52525b; margin-left: auto;"></i>
+    </div>
+    <p class="section-title">Foto Profil</p>
+    <p class="text-desc">Upload foto sendiri (1 akun = 1 foto, max 1 MB) atau pilih preset di bawah.</p>
+    <button class="upload-btn"><i class='bx bx-upload'></i> Upload foto profil</button>
+    <div class="avatar-preview"><img src="https://i.pinimg.com/736x/8a/80/2f/8a802f8b3e04ce32eb62f1cc23272b95.jpg" alt="Preview"></div>
+    <div class="preset-grid">
+      <div class="preset-item active"><img src="https://ui-avatars.com/api/?name=S&background=333&color=fff" alt="Default"><span>Default</span></div>
+      <div class="preset-item"><img src="https://ui-avatars.com/api/?name=M&background=222&color=fff" alt="Mask"><span>Mask</span></div>
+      <div class="preset-item"><img src="https://ui-avatars.com/api/?name=M&background=444&color=fff" alt="Mafia"><span>Mafia</span></div>
+      <div class="preset-item"><img src="https://ui-avatars.com/api/?name=H&background=666&color=fff" alt="Hearts"><span>Hearts</span></div>
+      <div class="preset-item"><img src="https://ui-avatars.com/api/?name=A&background=888&color=fff" alt="Anime"><span>Anime</span></div>
+    </div>
+    <button class="btn-primary" style="margin-bottom: 30px;">Simpan Foto Profil</button>
+    <p class="section-title">Tag Role (Tampilan)</p>
+    <p class="text-desc">Hanya mengubah badge profil — tidak mengubah hak akses.</p>
+    <div class="tag-role">FREE</div>
+    <p class="section-title">Custom Title</p>
+    <p class="text-desc">Tap preset untuk equip. Title yang sudah dibeli tetap di inventory — tinggal ganti kapan saja.</p>
+    <p class="text-warning">Belum punya title — beli di Shop tab Style.</p>
+    <p class="section-title">Banner Profil</p>
+    <p class="text-desc">Tap banner untuk equip · tampil di profil chat</p>
+    <p class="text-warning">Belum punya banner — beli di Shop tab Style.</p>
+    <p class="section-title">Keamanan</p>
+    <div class="card" style="margin-bottom: 0;">
+      <div class="card-inner"><i class='bx bx-lock-alt' style="font-size: 20px;"></i><h4 style="font-size: 14px; margin-left: 8px;">Ubah Password</h4></div>
+      <i class='bx bx-chevron-right' style="color: #52525b;"></i>
+    </div>
+  </div>
+</body>
+</html>

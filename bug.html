@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shikimori - Bug</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .header-actions { display: flex; gap: 8px; }
+    .header-actions .icon-btn.home-btn { background: #2a1b3d; color: #a855f7; border-color: #4c1d95; }
+    .sender-card { background: linear-gradient(90deg, #1f0f12, var(--bg-card)); border-color: #4a1c24; }
+    .sender-icon { width: 40px; height: 40px; background: #3f121a; color: #ef4444; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 20px; }
+    .badge-no-sender { background: #ef4444; color: white; font-size: 9px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; font-weight: 700; }
+    .server-card { background: linear-gradient(90deg, #0a1f14, var(--bg-card)); border-color: #163a24; margin-bottom: 12px; }
+    .server-text h4 { font-size: 13px; color: #4ade80; letter-spacing: 1px; margin-bottom: 2px;}
+    .server-text p { font-size: 11px; color: var(--text-muted); }
+    .info-bug-card { background: #0f172a; border-color: #1e3a8a; margin-bottom: 24px; }
+    .info-bug-card h4 { font-size: 14px; color: #60a5fa; margin-bottom: 2px; }
+    .info-bug-card p { font-size: 11px; color: var(--text-muted); }
+    .status-gs-card { background: linear-gradient(90deg, #2a1c0a, #1a1308); border-color: #78350f; margin-bottom: 24px; }
+    .status-gs-text h4 { font-size: 14px; color: #fbbf24; font-weight: 700; letter-spacing: 0.5px;}
+    .status-gs-text p { font-size: 11px; color: #d97706; }
+    .btn-jadwal { background: #78350f; color: #fbbf24; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .source-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .source-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; color: var(--text-muted); cursor: pointer; }
+    .source-btn i { font-size: 24px; }
+    .source-btn.active { border-color: var(--accent); background: rgba(168, 85, 247, 0.1); color: var(--accent); }
+    .source-btn span { font-size: 12px; font-weight: 600; letter-spacing: 0.5px;}
+    .select-bug-card { background: var(--bg-card-light); border-color: var(--border-color); margin-bottom: 24px; }
+    .select-bug-icon { width: 40px; height: 40px; background: rgba(168, 85, 247, 0.2); color: var(--accent); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 20px; }
+    .select-bug-text h4 { font-size: 14px; margin-bottom: 2px; }
+    .select-bug-text p { font-size: 12px; color: var(--text-muted); }
+    .input-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; display: block; }
+    .custom-input { width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; color: white; font-size: 14px; margin-bottom: 16px; outline: none; display: flex; align-items: center; gap: 12px; }
+    .custom-input input { background: transparent; border: none; outline: none; color: white; width: 100%; font-size: 14px; }
+    .custom-input i { font-size: 20px; color: var(--text-muted); }
+    .char-count { text-align: right; font-size: 11px; color: var(--text-muted); margin-top: -10px; margin-bottom: 20px; }
+    .btn-send { background: #c084fc; color: #2e1065; font-weight: 700; font-size: 14px; letter-spacing: 1px; }
+    .ban-grup-card { background: linear-gradient(90deg, #1f0f1a, var(--bg-card)); border-color: #7f1d1d; margin-bottom: 24px; cursor: pointer; }
+    .ban-grup-icon { width: 40px; height: 40px; background: rgba(239, 68, 68, 0.1); color: #ef4444; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 20px; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; width: 90%; max-width: 400px; padding: 24px; transform: translateY(20px); transition: all 0.3s ease; }
+    .modal-overlay.active .modal-box { transform: translateY(0); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-header h3 { font-size: 18px; color: #ef4444; display: flex; align-items: center; gap: 8px; }
+    .modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; }
+    .modal-label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; display: block; }
+    .custom-select { width: 100%; background: var(--bg-main); border: 1px solid var(--border-color); padding: 14px; border-radius: 12px; color: white; font-size: 14px; margin-bottom: 20px; outline: none; appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%239ca3af%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 14px top 50%; background-size: 12px auto; }
+    .btn-execute { width: 100%; background: #ef4444; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
+    .btn-execute:hover { background: #dc2626; }
+    .btn-execute:disabled { background: #7f1d1d; cursor: not-allowed; opacity: 0.7; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <button class="icon-btn"><i class='bx bx-menu'></i></button>
+      <h1>Bug</h1>
+      <div class="header-actions">
+        <button class="icon-btn home-btn" onclick="window.location.href='home.html'"><i class='bx bx-home'></i></button>
+        <button class="icon-btn" onclick="window.location.href='profile.html'"><i class='bx bx-user'></i></button>
+        <button class="icon-btn"><i class='bx bx-bell'></i><div class="notif-dot"></div></button>
+      </div>
+    </header>
+    <div class="card sender-card">
+      <div class="card-inner">
+        <div class="sender-icon"><i class='bx bx-log-in-circle'></i></div>
+        <div><h4 style="font-size: 14px; display: flex; align-items: center;">Manage Sender <span class="badge-no-sender">NO SENDER</span></h4><p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Personal sender · pair code & scan QR</p></div>
+      </div>
+      <i class='bx bx-chevron-right' style="color: #52525b;"></i>
+    </div>
+    <div class="card server-card">
+      <div class="card-inner"><i class='bx bx-check-circle' style="color: #4ade80; font-size: 20px;"></i><div class="server-text" style="margin-left: 8px;"><h4>SERVER: SERVER 1</h4><p>node w1 · ACTIVE</p></div></div>
+    </div>
+    <div class="card info-bug-card" onclick="window.location.href='info-bug.html'">
+      <div class="card-inner"><i class='bx bx-info-circle' style="color: #60a5fa; font-size: 20px;"></i><div style="margin-left: 8px;"><h4>Info Bug</h4><p>Softban, device target, tips kirim</p></div></div>
+      <i class='bx bx-chevron-right' style="color: #52525b;"></i>
+    </div>
+    <h2 style="font-size: 18px; margin-bottom: 16px;">Attack</h2>
+    <div class="card status-gs-card">
+      <div class="card-inner">
+        <div style="width: 8px; height: 8px; background: #f59e0b; border-radius: 50%; margin-right: 8px;"></div>
+        <div class="status-gs-text"><h4>STATUS GS : OFF</h4><p>Override manual · OFF</p></div>
+      </div>
+      <button class="btn-jadwal">JADWAL</button>
+    </div>
+    <p class="section-title" style="margin-top: 0;">Sender Source</p>
+    <div class="source-grid">
+      <div class="source-btn active"><i class='bx bx-user'></i><span>PERSONAL</span></div>
+      <div class="source-btn"><i class='bx bx-globe'></i><span>GLOBAL</span></div>
+    </div>
+    <div class="card select-bug-card" onclick="window.location.href='bug-type.html'">
+      <div class="card-inner">
+        <div class="select-bug-icon"><i class='bx bx-bug-alt'></i></div>
+        <div class="select-bug-text" style="margin-left: 12px;"><h4>Tap to select bug</h4><p>Pilih bug yang ingin digunakan</p></div>
+      </div>
+      <i class='bx bx-chevron-right' style="color: #52525b;"></i>
+    </div>
+    <label class="input-label">Target nomor</label>
+    <div class="custom-input"><i class='bx bx-target-lock'></i><input type="text" placeholder="62xxx / 60xxx / 1xxx / +44..."></div>
+    <label class="input-label">Custom message</label>
+    <div class="custom-input" style="align-items: flex-start; padding-top: 14px;">
+      <i class='bx bx-message-square-detail' style="margin-top: 2px;"></i>
+      <textarea placeholder="Assalamualaikum" rows="2" style="background: transparent; border: none; outline: none; color: white; width: 100%; font-family: inherit; font-size: 14px; resize: none;"></textarea>
+    </div>
+    <div class="char-count">15/80</div>
+    <div class="card ban-grup-card" id="btnBanGrup">
+      <div class="card-inner">
+        <div class="ban-grup-icon"><i class='bx bx-group'></i></div>
+        <div style="margin-left: 12px;"><h4 style="font-size: 14px; color: #ef4444;">Ban Grup</h4><p style="font-size: 12px; color: var(--text-muted);">Kunci grup target (Anti spam)</p></div>
+      </div>
+      <i class='bx bx-chevron-right' style="color: #ef4444;"></i>
+    </div>
+    <button class="btn-primary btn-send" style="margin-bottom: 40px;"><i class='bx bx-send'></i> SEND</button>
+  </div>
+  <div class="modal-overlay" id="modalBan">
+    <div class="modal-box">
+      <div class="modal-header"><h3><i class='bx bx-error-circle'></i> Ban Grup</h3><button class="modal-close" id="closeModal"><i class='bx bx-x'></i></button></div>
+      <label class="modal-label">Link / ID Grup Target</label>
+      <div class="custom-input" style="margin-bottom: 20px;"><i class='bx bx-link'></i><input type="text" id="linkGrup" placeholder="https://chat.whatsapp.com/..."></div>
+      <label class="modal-label">Tipe Ban</label>
+      <select class="custom-select" id="tipeBan">
+        <option value="Lock Group">Lock Group (Tutup kirim pesan)</option>
+        <option value="Kick All">Kick All (Keluarkan semua member)</option>
+        <option value="Blank GC">Blank GC (Hapus deskripsi/foto)</option>
+        <option value="Crash GC">Crash GC (Force close WA target)</option>
+      </select>
+      <button class="btn-execute" id="btnEksekusi"><i class='bx bx-shield-x'></i> EKSEKUSI BAN</button>
+    </div>
+  </div>
+  <script>
+    const btnBanGrup = document.getElementById('btnBanGrup');
+    const modalBan = document.getElementById('modalBan');
+    const closeModal = document.getElementById('closeModal');
+    const btnEksekusi = document.getElementById('btnEksekusi');
+    const linkGrup = document.getElementById('linkGrup');
+    btnBanGrup.addEventListener('click', () => { modalBan.classList.add('active'); });
+    closeModal.addEventListener('click', () => { modalBan.classList.remove('active'); });
+    modalBan.addEventListener('click', (e) => { if (e.target === modalBan) modalBan.classList.remove('active'); });
+    btnEksekusi.addEventListener('click', () => {
+      const link = linkGrup.value.trim();
+      const tipe = document.getElementById('tipeBan').value;
+      if (!link) { alert('❌ Link/ID Grup tidak boleh kosong!'); return; }
+      btnEksekusi.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Memproses...";
+      btnEksekusi.disabled = true;
+      setTimeout(() => {
+        alert(`✅ Berhasil!\n\nGrup: ${link}\nTipe Ban: ${tipe}`);
+        linkGrup.value = '';
+        btnEksekusi.innerHTML = "<i class='bx bx-shield-x'></i> EKSEKUSI BAN";
+        btnEksekusi.disabled = false;
+        modalBan.classList.remove('active');
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

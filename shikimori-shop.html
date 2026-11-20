@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shikimori - Shikimori Shop</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .header-shop { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; margin-bottom: 10px; }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-left .icon-btn { width: 36px; height: 36px; }
+    .header-left h1 { font-size: 18px; font-weight: 600; line-height: 1.2; }
+    .header-left p { font-size: 11px; color: var(--text-muted); }
+    .header-right { display: flex; gap: 8px; }
+    .header-right .icon-btn { width: 40px; height: 40px; }
+    .saldo-card { background: linear-gradient(90deg, #0a1f14, #120f1a); border: 1px solid #163a24; border-radius: 16px; padding: 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .saldo-left { display: flex; align-items: center; gap: 12px; }
+    .saldo-icon { width: 36px; height: 36px; background: rgba(74, 222, 128, 0.1); color: #4ade80; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 18px; }
+    .saldo-left h4 { font-size: 14px; font-weight: 500; }
+    .saldo-right { display: flex; align-items: center; gap: 6px; color: #4ade80; font-weight: 600; font-size: 15px; }
+    .promo-card { background: linear-gradient(90deg, #1c1b0a, #120f1a); border: 1px solid #3f3f1c; border-radius: 16px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .promo-left { display: flex; align-items: center; gap: 12px; }
+    .promo-icon { color: #eab308; font-size: 20px; }
+    .promo-text h4 { color: #eab308; font-size: 13px; font-weight: 700;}
+    .promo-text p { font-size: 11px; color: #a16207; }
+    .promo-badge { background: rgba(234, 179, 8, 0.2); color: #eab308; border: 1px solid #a16207; padding: 4px 8px; border-radius: 8px; font-size: 12px; font-weight: 700; }
+    .info-text { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+    .info-text i { color: #c084fc; font-size: 16px; }
+    .info-text span { color: #c084fc; }
+    .tabs-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; scrollbar-width: none; }
+    .tabs-container::-webkit-scrollbar { display: none; }
+    .tab-item { min-width: 70px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: 0.2s; }
+    .tab-item i { font-size: 20px; color: var(--text-muted); }
+    .tab-item span { font-size: 11px; color: var(--text-muted); }
+    .tab-item.active { background: rgba(168, 85, 247, 0.1); border-color: var(--accent); }
+    .tab-item.active i, .tab-item.active span { color: var(--accent); }
+    .role-info-bar { display: flex; align-items: flex-start; gap: 10px; background: #13111c; border: 1px solid var(--border-color); padding: 12px; border-radius: 12px; font-size: 11px; color: #c084fc; line-height: 1.4; margin-bottom: 20px; }
+    .role-info-bar i { font-size: 16px; margin-top: 2px; }
+    .show-benefits { display: flex; justify-content: flex-end; align-items: center; gap: 6px; font-size: 12px; color: #c084fc; margin-bottom: 16px; cursor: pointer; }
+    .show-benefits i { font-size: 16px; }
+    .role-card { background: #181524; border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; display: flex; gap: 16px; margin-bottom: 12px; position: relative; }
+    .role-icon-wrapper { width: 48px; height: 48px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 24px; flex-shrink: 0; }
+    .role-icon-wrapper.premium { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid #1e3a8a; }
+    .role-icon-wrapper.reseller { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #7f1d1d; }
+    .role-icon-wrapper.coadmin { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid #1e3a8a; }
+    .role-icon-wrapper.admin { background: rgba(168, 85, 247, 0.1); color: #c084fc; border: 1px solid #4c1d95; }
+    .role-icon-wrapper.superadmin { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid #0369a1; }
+    .role-icon-wrapper.god { background: rgba(244, 63, 94, 0.1); color: #f43f5e; border: 1px solid #881337; }
+    .role-icon-wrapper.immortal { background: rgba(234, 179, 8, 0.1); color: #eab308; border: 1px solid #713f12; }
+    .role-content { flex: 1; }
+    .role-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .role-header h3 { font-size: 15px; font-weight: 600; color: #e4e4e7; }
+    .role-price { font-size: 14px; font-weight: 600; color: #e4e4e7; }
+    .role-benefits { list-style: none; padding: 0; margin: 0; }
+    .role-benefits li { position: relative; padding-left: 10px; font-size: 12px; color: #9ca3af; margin-bottom: 4px; line-height: 1.4; }
+    .role-benefits li::before { content: '·'; position: absolute; left: 0; color: #9ca3af; font-weight: bold; }
+    .role-benefits li.discount-text { color: #9ca3af; }
+    .role-benefits li.discount-text span { color: #fbbf24; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header-shop">
+      <div class="header-left">
+        <button class="icon-btn" onclick="window.location.href='home.html'"><i class='bx bx-chevron-left'></i></button>
+        <div><h1>Shikimori Shop</h1><p>Beli · lanjut bayar · Role: FREE</p></div>
+      </div>
+      <div class="header-right">
+        <button class="icon-btn"><i class='bx bx-history'></i></button>
+        <button class="icon-btn"><i class='bx bx-menu'></i></button>
+      </div>
+    </header>
+    <div class="saldo-card">
+      <div class="saldo-left"><div class="saldo-icon"><i class='bx bx-wallet'></i></div><h4>Saldo Wallet</h4></div>
+      <div class="saldo-right">Rp 1.000 <i class='bx bx-chevron-right'></i></div>
+    </div>
+    <div class="promo-card">
+      <div class="promo-left"><i class='bx bxs-flame promo-icon'></i><div class="promo-text"><h4>JUMAT BERKAH</h4><p>Diskon 50% shop & GS · berlangsung</p></div></div>
+      <span class="promo-badge">-50%</span>
+    </div>
+    <div class="info-text"><i class='bx bx-wallet-alt'></i><p>Beli pakai saldo wallet. Isi saldo lewat menu <span>Wallet</span> jika kurang.</p></div>
+    <div class="tabs-container">
+      <div class="tab-item active"><i class='bx bx-layer'></i><span>Role</span></div>
+      <div class="tab-item"><i class='bx bx-globe'></i><span>GS</span></div>
+      <div class="tab-item"><i class='bx bx-puzzle'></i><span>Fitur</span></div>
+      <div class="tab-item"><i class='bx bx-palette'></i><span>Style</span></div>
+      <div class="tab-item"><i class='bx bx-bolt-circle'></i><span>Flash</span></div>
+    </div>
+    <div class="role-info-bar"><i class='bx bx-layer'></i><div>Role kamu: FREE · beli berurutan FREE → PREMIUM → RESELLER → CO ADMIN → ADMIN → SUPER ADMIN → GOD → IMMORTAL</div></div>
+    <div class="show-benefits"><i class='bx bx-info-circle'></i> Show Benefits</div>
+    <div class="role-card">
+      <div class="role-icon-wrapper premium"><i class='bx bx-bolt'></i></div>
+      <div class="role-content"><div class="role-header"><h3>Premium</h3><span class="role-price">Rp 4.000</span></div><ul class="role-benefits"><li>Orang keren dan baik hati</li><li class="discount-text">Diskon 50% (JUMAT BERKAH) — normal <span>Rp 8.000</span></li></ul></div>
+    </div>
+    <div class="role-card">
+      <div class="role-icon-wrapper reseller"><i class='bx bx-handshake'></i></div>
+      <div class="role-content"><div class="role-header"><h3>Reseller</h3><span class="role-price">Rp 2.000</span></div><ul class="role-benefits"><li>Mencari keuntungan</li><li>Wajib PREMIUM dulu sebelum beli role ini.</li><li class="discount-text">Diskon 50% (JUMAT BERKAH) — normal <span>Rp 4.000</span></li></ul></div>
+    </div>
+    <div class="role-card">
+      <div class="role-icon-wrapper coadmin"><i class='bx bx-shield-quarter'></i></div>
+      <div class="role-content"><div class="role-header"><h3>Co Admin</h3><span class="role-price">Rp 7.500</span></div><ul class="role-benefits"><li>CEO shop</li><li>CD 15s</li><li>GS 5/jam</li><li>gen Premium 4×/hari</li><li>Wajib PREMIUM dulu sebelum beli role ini.</li><li class="discount-text">Diskon 50% (JUMAT BERKAH) — normal <span>Rp 15.000</span></li></ul></div>
+    </div>
+    <div class="role-card">
+      <div class="role-icon-wrapper admin"><i class='bx bx-user-circle'></i></div>
+      <div class="role-content"><div class="role-header"><h3>Admin</h3><span class="role-price">Rp 12.500</span></div><ul class="role-benefits"><li>CD 2s</li><li>GS 7/jam</li><li>token gen 5×/hari</li><li>GS code 1 hari</li><li>Wajib PREMIUM dulu sebelum beli role ini.</li><li class="discount-text">Diskon 50% (JUMAT BERKAH) — normal <span>Rp 25.000</span></li></ul></div>
+    </div>
+    <div class="role-card">
+      <div class="role-icon-wrapper superadmin"><i class='bx bx-star'></i></div>
+      <div class="role-content"><div class="role-header"><h3>Super Admin</h3><span class="role-price">Rp 20.000</span></div><ul class="role-benefits"><li>No CD</li><li>GS lifetime</li><li>GS 9/jam</li><li>token gen 7×/hari</li><li>GS 1–3 hari</li><li>Wajib PREMIUM dulu sebelum beli role ini.</li><li class="discount-text">Diskon 50% (JUMAT BERKAH) — normal <span>Rp 40.000</span></li></ul></div>
+    </div>
+    <div class="role-card">
+      <div class="role-icon-wrapper god"><i class='bx bx-skull'></i></div>
+      <div class="role-content"><div class="role-header"><h3>GOD</h3><span class="role-price">Rp 25.000</span></div><ul class="role-benefits"><li>No CD</li><li>GS lifetime</li><li>GS 11/jam</li><li>token gen 10×/hari</li><li>GS 1–7 hari</li><li>Wajib PREMIUM dulu sebelum beli role ini.</li><li class="discount-text">Diskon 50% (JUMAT BERKAH) — normal <span>Rp 50.000</span></li></ul></div>
+    </div>
+    <div class="role-card" style="margin-bottom: 40px;">
+      <div class="role-icon-wrapper immortal"><i class='bx bx-diamond'></i></div>
+      <div class="role-content"><div class="role-header"><h3>Immortal</h3><span class="role-price">Rp 32.500</span></div><ul class="role-benefits"><li>No CD</li><li>GS lifetime</li><li>GS 13/jam</li><li>token gen 15×/hari</li><li>GS max 14 hari</li><li>Wajib PREMIUM dulu sebelum beli role ini.</li><li class="discount-text">Diskon 50% (JUMAT BERKAH) — normal <span>Rp 65.000</span></li></ul></div>
+    </div>
+  </div>
+  <script>
+    document.querySelectorAll('.tab-item').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

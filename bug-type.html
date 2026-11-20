@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shikimori - Bug Type</title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .header-bug { text-align: center; margin-bottom: 24px; position: relative; }
+    .header-bug .drag-indicator { width: 40px; height: 4px; background: #52525b; border-radius: 4px; margin: 0 auto 20px auto; }
+    .header-bug h1 { color: #c084fc; font-size: 22px; font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
+    .header-bug p { font-size: 13px; color: var(--text-muted); }
+    .bug-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .bug-item { background: linear-gradient(135deg, #181524, #0f0c16); border: 1px solid #2a2438; border-radius: 16px; padding: 24px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; cursor: pointer; transition: all 0.2s; }
+    .bug-item.locked { filter: grayscale(0.5); opacity: 0.7; }
+    .bug-item.unlocked { border-color: #4c1d95; background: linear-gradient(135deg, #2e1065, #1e1b4b); box-shadow: 0 0 15px rgba(168, 85, 247, 0.15); }
+    .bug-icon { width: 50px; height: 50px; background: #27272a; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; margin-bottom: 12px; color: #a1a1aa; }
+    .bug-item.unlocked .bug-icon { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+    .bug-item h3 { font-size: 13px; font-weight: 600; color: #e4e4e7; margin-bottom: 8px; text-transform: uppercase; }
+    .bug-item.unlocked h3 { color: white; }
+    .badge-status { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px; }
+    .badge-premium { background: #451a03; color: #f59e0b; border: 1px solid #78350f; }
+    .badge-baru { background: #1e1b4b; color: #a855f7; border: 1px solid #4c1d95; }
+    .lock-icon-top { position: absolute; top: 12px; right: 12px; font-size: 20px; color: #52525b; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="header-bug">
+      <div class="drag-indicator"></div>
+      <h1>BUG TYPE</h1>
+      <p id="bugCount">12 tersedia</p>
+    </div>
+    <div class="bug-grid" id="bugGrid"></div>
+  </div>
+  <script>
+    const currentUser = "Shikimori"; 
+    const bugList = [
+      { id: 1, name: "DELAY MAKER", type: "BARU", icon: "bx-time-five", lockedForFree: false },
+      { id: 2, name: "DELAY HARD", type: "PREMIUM", icon: "bx-lock-alt", lockedForFree: true },
+      { id: 3, name: "DELAY MEDIUM", type: "PREMIUM", icon: "bx-lock-alt", lockedForFree: true },
+      { id: 4, name: "DELAY FREEZE", type: "PREMIUM", icon: "bx-snowflake", lockedForFree: true },
+      { id: 5, name: "DELAY SEDOT", type: "BARU", icon: "bx-bug", lockedForFree: false },
+      { id: 6, name: "FORCLOSE IOS", type: "PREMIUM", icon: "bx-lock-alt", lockedForFree: true },
+      { id: 7, name: "LockCHAT(Desah😛)", type: "PREMIUM", icon: "bx-lock-alt", lockedForFree: true },
+      { id: 8, name: "LOCKCHAT PERMA", type: "PREMIUM", icon: "bx-lock-alt", lockedForFree: true },
+      { id: 9, name: "BLANK SCREEN", type: "PREMIUM", icon: "bx-mobile", lockedForFree: true },
+      { id: 10, name: "FORCLOSE CLIK", type: "PREMIUM", icon: "bx-lock-alt", lockedForFree: true },
+      { id: 11, name: "DELAY SYSTEM UI", type: "PREMIUM", icon: "bx-cog", lockedForFree: true },
+      { id: 12, name: "HACK LOCK CHAT", type: "PREMIUM", icon: "bx-lock-alt", lockedForFree: true }
+    ];
+    const grid = document.getElementById('bugGrid');
+    function renderBugs() {
+      let html = '';
+      bugList.forEach(bug => {
+        const isOwner = currentUser === "Shikimori";
+        const isLocked = isOwner ? false : bug.lockedForFree; 
+        let itemClass = isLocked ? 'bug-item locked' : 'bug-item unlocked';
+        html += `
+          <div class="${itemClass}" onclick="pilihBug('${bug.name}', ${isLocked})">
+            ${isLocked ? `<i class='bx bx-lock lock-icon-top'></i>` : ''}
+            <div class="bug-icon"><i class='bx ${bug.icon}'></i></div>
+            <h3>${bug.name}</h3>
+            <span class="badge-status ${bug.type === 'BARU' ? 'badge-baru' : 'badge-premium'}">${bug.type}</span>
+          </div>
+        `;
+      });
+      grid.innerHTML = html;
+    }
+    function pilihBug(namaBug, isLocked) {
+      if (isLocked) { alert(`❌ Bug "${namaBug}" terkunci!`); } 
+      else { alert(`✅ Bug "${namaBug}" berhasil dipilih!`); window.location.href = 'bug.html'; }
+    }
+    renderBugs();
+  </script>
+</body>
+</html>
